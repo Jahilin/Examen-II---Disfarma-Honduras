@@ -2,63 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empleado;
 use Illuminate\Http\Request;
 
 class EmpleadoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private function reglas($id = 0)
+    {
+        return [
+            'identidad' => 'required|digits:13|unique:empleados,identidad,' . $id,
+            'nombre' => 'required|max:100',
+            'apellido' => 'required|max:100',
+            'correo' => 'required|email|max:150',
+            'cargo' => 'required|in:Regente Farmacéutico,Asistente de Farmacia,Jefe de Bodega,Despachador,Cajero',
+            'salario' => 'required|numeric|gt:0',
+            'fecha_ingreso' => 'required|date',
+            'estado' => 'required|in:Activo,Inactivo',
+        ];
+    }
+
+    private function mensajes()
+    {
+        return [
+            'required' => 'Este campo es obligatorio.',
+            'identidad.digits' => 'El DNI debe tener exactamente 13 dígitos numéricos.',
+            'identidad.unique' => 'Este DNI ya está registrado.',
+            'salario.gt' => 'El salario debe ser mayor que 0.',
+            'fecha_ingreso.date' => 'Ingrese una fecha de ingreso válida.',
+            'cargo.required' => 'El cargo es obligatorio.',
+        ];
+    }
+
     public function index()
     {
-        //
+        $empleados = Empleado::orderBy('apellido')->paginate(10);
+        return view('empleados.index', compact('empleados'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('empleados.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $datos = $request->validate($this->reglas(0), $this->mensajes());
+        Empleado::create($datos);
+
+        return redirect()->route('empleados.index')
+            ->with('success', 'Empleado registrado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Empleado $empleado)
     {
-        //
+        return view('empleados.edit', compact('empleado'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Empleado $empleado)
     {
-        //
+        $datos = $request->validate($this->reglas($empleado->id), $this->mensajes());
+        $empleado->update($datos);
+
+        return redirect()->route('empleados.index')
+            ->with('success', 'Empleado actualizado correctamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Empleado $empleado)
     {
-        //
-    }
+        $empleado->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('empleados.index')
+            ->with('success', 'Empleado eliminado correctamente.');
     }
 }
