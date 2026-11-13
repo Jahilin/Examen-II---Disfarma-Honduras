@@ -14,16 +14,22 @@
 @endphp
 <div class="container-fluid px-4">
     <h1 class="mt-4">Nómina y Personal Farmacéutico</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Empleados</li>
+    </ol>
 
     <div class="card mb-4">
-        <div class="card-header text-end">
-            <a href="{{ route('empleados.create') }}" class="btn btn-primary">
+        <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span class="fw-bold"><i class="bi bi-people me-1"></i> Listado de personal</span>
+            <a href="{{ route('empleados.create') }}" class="btn btn-sm btn-primary">
                 <i class="bi bi-plus-lg"></i> Nuevo empleado
             </a>
         </div>
+
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped align-middle">
+                <table class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
                             <th>DNI</th><th>Nombre</th><th>Correo</th><th>Cargo</th>

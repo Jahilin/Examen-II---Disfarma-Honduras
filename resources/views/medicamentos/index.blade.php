@@ -5,22 +5,29 @@
 @section('content')
 <div class="container-fluid px-4">
     <h1 class="mt-4">Catálogo de Medicamentos</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Medicamentos</li>
+    </ol>
 
     <div class="card mb-4">
-        <div class="card-header d-flex flex-wrap justify-content-between gap-2">
-            <form method="GET" action="{{ route('medicamentos.index') }}" class="d-flex gap-2">
-                <input type="text" name="buscar" value="{{ $buscar }}"
-                       class="form-control" placeholder="Buscar por nombre o SKU">
-                <button class="btn btn-outline-primary"><i class="bi bi-search"></i></button>
-            </form>
-            <a href="{{ route('medicamentos.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> Nuevo medicamento
-            </a>
+        <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span class="fw-bold"><i class="bi bi-capsule me-1"></i> Listado de medicamentos</span>
+            <div class="d-flex flex-wrap gap-2">
+                <form method="GET" action="{{ route('medicamentos.index') }}" class="d-flex gap-2">
+                    <input type="text" name="buscar" value="{{ $buscar }}"
+                           class="form-control form-control-sm" placeholder="Buscar por nombre o SKU">
+                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-search"></i></button>
+                </form>
+                <a href="{{ route('medicamentos.create') }}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus-lg"></i> Nuevo medicamento
+                </a>
+            </div>
         </div>
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped align-middle">
+                <table class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
                             <th>Foto</th><th>SKU</th><th>Nombre</th><th>Categoría</th>
